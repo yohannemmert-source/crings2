@@ -1,46 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>3D Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer</title>
     <style>
-        body { margin: 0; background: #f0f0f0; }
-        #container { width: 100%; height: 100vh; }
-        #info { position: absolute; top: 10px; left: 10px; color: black; }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        
+        model-viewer {
+            width: 100%;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #333;
+            font-size: 18px;
+            z-index: 100;
+        }
     </style>
+    <!-- Google's Model Viewer - Works everywhere -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
-    <div id="container"></div>
-    <div id="info">Testing 3D Viewer...</div>
-
-    <script src="https://unpkg.com/three@0.150.1/build/three.min.js"></script>
-    <script>
-        console.log("Three.js loaded:", typeof THREE);
-        
-        // Simple test - just show a rotating cube first
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('container').appendChild(renderer.domElement);
-        
-        // Test cube
-        const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-        
-        camera.position.z = 5;
-        
-        function animate() {
-            requestAnimationFrame(animate);
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-            renderer.render(scene, camera);
-        }
-        animate();
-        
-        document.getElementById('info').textContent = "Green cube should be rotating";
-    </script>
+    <div id="loading">Loading 3D Model...</div>
+    
+    <model-viewer 
+        src="cring.glb"
+        alt="3D Model"
+        auto-rotate
+        auto-rotate-delay="0"
+        rotation-per-second="30deg"
+        camera-controls
+        shadow-intensity="1"
+        environment-image="neutral"
+        exposure="1"
+        onload="document.getElementById('loading').style.display='none'">
+    </model-viewer>
 </body>
 </html>
